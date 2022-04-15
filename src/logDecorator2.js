@@ -1,5 +1,5 @@
-const logDecorator = (value, args) => {
-  const { kind, name } = args;
+const logDecorator = (value, context) => {
+  const { kind, name } = context;
 
   if (kind === 'method') {
     return function(...args) {

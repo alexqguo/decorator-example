@@ -28,27 +28,25 @@ function applyClassDecs(ret, targetClass, metadataMap, classDecs) { if (classDec
 
 function _applyDecs(targetClass, memberDecs, classDecs) { var ret = [], staticMetadataMap = {}, protoMetadataMap = {}; return applyMemberDecs(ret, targetClass, protoMetadataMap, staticMetadataMap, memberDecs), convertMetadataMapToFinal(targetClass.prototype, protoMetadataMap), applyClassDecs(ret, targetClass, staticMetadataMap, classDecs), convertMetadataMapToFinal(targetClass, staticMetadataMap), ret; }
 
-const logDecorator = (value, context) => {
+const deprecated = (value, context) => {
   const {
     kind,
     name
   } = context;
 
   if (kind === 'class') {
-    // If it's a class decorator, create a new wrapper and return it
+    console.warn(`WARNING: Class ${name} is deprecated!!`);
     return class extends value {
       constructor(...args) {
         super(...args);
-        console.log(`Constructor invoked with arguments: ${JSON.stringify(args)}`);
       }
 
     };
   }
 
   if (kind === 'method') {
-    // If it's a method decorator, return a new function wrapping the original
     return function (...args) {
-      console.log(`Function ${name} invoked with ${JSON.stringify(args)}`);
+      console.warn(`WARNING: ${name} is deprecated!!`);
       return value.apply(this, args);
     };
   }
@@ -70,7 +68,7 @@ class Person {
 
 }
 
-[_initProto, _Person, _initClass] = _applyDecs(Person, [[logDecorator, 2, "greet"]], [logDecorator]);
+[_initProto, _Person, _initClass] = _applyDecs(Person, [[deprecated, 2, "greet"]], [deprecated]);
 
 _initClass();
 

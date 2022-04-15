@@ -1,4 +1,4 @@
-var _initClass, _initProto;
+var _initProto;
 
 function createMetadataMethodsForProperty(metadataMap, kind, property, decoratorFinishedRef) { return { getMetadata: function (key) { assertNotFinished(decoratorFinishedRef, "getMetadata"), assertMetadataKey(key); var metadataForKey = metadataMap[key]; if (void 0 !== metadataForKey) if (1 === kind) { var pub = metadataForKey.public; if (void 0 !== pub) return pub[property]; } else if (2 === kind) { var priv = metadataForKey.private; if (void 0 !== priv) return priv.get(property); } else if (Object.hasOwnProperty.call(metadataForKey, "constructor")) return metadataForKey.constructor; }, setMetadata: function (key, value) { assertNotFinished(decoratorFinishedRef, "setMetadata"), assertMetadataKey(key); var metadataForKey = metadataMap[key]; if (void 0 === metadataForKey && (metadataForKey = metadataMap[key] = {}), 1 === kind) { var pub = metadataForKey.public; void 0 === pub && (pub = metadataForKey.public = {}), pub[property] = value; } else if (2 === kind) { var priv = metadataForKey.priv; void 0 === priv && (priv = metadataForKey.private = new Map()), priv.set(property, value); } else metadataForKey.constructor = value; } }; }
 
@@ -28,33 +28,24 @@ function applyClassDecs(ret, targetClass, metadataMap, classDecs) { if (classDec
 
 function _applyDecs(targetClass, memberDecs, classDecs) { var ret = [], staticMetadataMap = {}, protoMetadataMap = {}; return applyMemberDecs(ret, targetClass, protoMetadataMap, staticMetadataMap, memberDecs), convertMetadataMapToFinal(targetClass.prototype, protoMetadataMap), applyClassDecs(ret, targetClass, staticMetadataMap, classDecs), convertMetadataMapToFinal(targetClass, staticMetadataMap), ret; }
 
-const logDecorator = (value, context) => {
+const time = (value, context) => {
   const {
     kind,
     name
   } = context;
 
-  if (kind === 'class') {
-    // If it's a class decorator, create a new wrapper and return it
-    return class extends value {
-      constructor(...args) {
-        super(...args);
-        console.log(`Constructor invoked with arguments: ${JSON.stringify(args)}`);
-      }
-
-    };
-  }
-
   if (kind === 'method') {
-    // If it's a method decorator, return a new function wrapping the original
+    const startTime = +new Date(); // execution environment agnostic
+
     return function (...args) {
-      console.log(`Function ${name} invoked with ${JSON.stringify(args)}`);
-      return value.apply(this, args);
+      const result = value.apply(this, args);
+      const endTime = +new Date();
+      const totalTime = endTime - startTime;
+      console.log(`Operation ${name} took ${totalTime}ms`);
+      return result;
     };
   }
 };
-
-let _Person;
 
 class Person {
   constructor(name, age) {
@@ -65,14 +56,15 @@ class Person {
   }
 
   greet(otherName) {
+    for (let i = 0; i < 9999999999; i++) {
+      this.name = this.name;
+    }
+
     return `Hello ${otherName}! My name is ${this.name}, I am ${this.age} years old`;
   }
 
 }
 
-[_initProto, _Person, _initClass] = _applyDecs(Person, [[logDecorator, 2, "greet"]], [logDecorator]);
-
-_initClass();
-
-const p = new _Person('Alex', 30);
+[_initProto] = _applyDecs(Person, [[time, 2, "greet"]], []);
+const p = new Person('Alex', 30);
 console.log(p.greet('Jeff Bezos'));

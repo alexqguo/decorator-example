@@ -1,7 +1,7 @@
-const logDecorator = (value, args) => {
-  const { kind, name } = args;
+const logDecorator = (value, context) => {
+  const { kind, name } = context;
   console.log('value', value);
-  console.log('args', args);
+  console.log('context', context);
 };
 
 class Person {

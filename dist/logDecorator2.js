@@ -28,11 +28,11 @@ function applyClassDecs(ret, targetClass, metadataMap, classDecs) { if (classDec
 
 function _applyDecs(targetClass, memberDecs, classDecs) { var ret = [], staticMetadataMap = {}, protoMetadataMap = {}; return applyMemberDecs(ret, targetClass, protoMetadataMap, staticMetadataMap, memberDecs), convertMetadataMapToFinal(targetClass.prototype, protoMetadataMap), applyClassDecs(ret, targetClass, staticMetadataMap, classDecs), convertMetadataMapToFinal(targetClass, staticMetadataMap), ret; }
 
-const logDecorator = (value, args) => {
+const logDecorator = (value, context) => {
   const {
     kind,
     name
-  } = args;
+  } = context;
 
   if (kind === 'method') {
     return function (...args) {
