@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx babel examples.js --watch --out-file examples-compiled.js"
+    "start": "npx babel --watch src --out-dir dist"
   },
   "keywords": [],
   "author": "",
@@ -12,11 +12,20 @@
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.9",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-class-static-block": "^7.17.6",
     "@babel/plugin-proposal-decorators": "^7.17.9"
   },
   "babel": {
     "plugins": [
-      ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }]
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "version": "2021-12"
+        }
+      ],
+      "@babel/plugin-proposal-class-static-block",
+      "@babel/plugin-proposal-class-properties"
     ]
   }
 }
