@@ -16,7 +16,7 @@ const debounce = (timeout) => {
 
 class ApiClient {
   constructor(apiContext) {
-    this.apiContext = apiContext
+    this.apiContext = apiContext;
   }
 
   // @debounce(1000)
