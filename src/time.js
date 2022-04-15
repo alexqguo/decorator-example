@@ -2,8 +2,8 @@ const time = (value, context) => {
   const { kind, name } = context;
 
   if (kind === 'method') {
-    const startTime = +new Date(); // execution environment agnostic
     return function(...args) {
+      const startTime = +new Date(); // execution environment agnostic
       const result = value.apply(this, args);
       const endTime = +new Date();
       const totalTime = endTime - startTime;

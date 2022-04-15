@@ -35,10 +35,10 @@ const time = (value, context) => {
   } = context;
 
   if (kind === 'method') {
-    return function (...args) {
+    return async function (...args) {
       const startTime = +new Date(); // execution environment agnostic
 
-      const result = value.apply(this, args);
+      const result = await value.apply(this, args);
       const endTime = +new Date();
       const totalTime = endTime - startTime;
       console.log(`Operation ${name} took ${totalTime}ms`);
@@ -47,24 +47,35 @@ const time = (value, context) => {
   }
 };
 
-class Person {
-  constructor(name, age) {
+class ApiClient {
+  constructor(apiContext) {
     _initProto(this);
 
-    this.name = name;
-    this.age = age;
+    this.apiContext = apiContext;
   }
 
-  greet(otherName) {
+  post(apiPath, body) {
     for (let i = 0; i < 9999999999; i++) {
       this.name = this.name;
     }
 
-    return `Hello ${otherName}! My name is ${this.name}, I am ${this.age} years old`;
+    console.log(`Calling ${apiPath} with ${JSON.stringify(body)}`);
+  }
+
+  async asyncPost(apiPath, body) {
+    console.log(`Calling ${apiPath} with ${JSON.stringify(body)}`);
+    return new Promise(resolve => {
+      setTimeout(resolve, 1500);
+    });
   }
 
 }
 
-[_initProto] = _applyDecs(Person, [[time, 2, "greet"]], []);
-const p = new Person('Alex', 30);
-console.log(p.greet('Jeff Bezos'));
+[_initProto] = _applyDecs(ApiClient, [[time, 2, "post"], [time, 2, "asyncPost"]], []);
+
+(async () => {
+  const client = new ApiClient({});
+  client.post('/syncKeywords', {});
+  await client.asyncPost('/keywords', {});
+  console.log('Called API successfully\n');
+})();
