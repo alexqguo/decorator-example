@@ -52,15 +52,14 @@ class ApiClient {
     _initProto(this);
 
     this.apiContext = apiContext;
-  }
+  } // @time
+  // post(apiPath, body) {
+  //   for (let i = 0; i < 9999999999; i++) {
+  //     this.apiContext = this.apiContext;
+  //   }
+  //   console.log(`Calling ${apiPath} with ${JSON.stringify(body)}`);
+  // }
 
-  post(apiPath, body) {
-    for (let i = 0; i < 9999999999; i++) {
-      this.name = this.name;
-    }
-
-    console.log(`Calling ${apiPath} with ${JSON.stringify(body)}`);
-  }
 
   async asyncPost(apiPath, body) {
     console.log(`Calling ${apiPath} with ${JSON.stringify(body)}`);
@@ -71,11 +70,11 @@ class ApiClient {
 
 }
 
-[_initProto] = _applyDecs(ApiClient, [[time, 2, "post"], [time, 2, "asyncPost"]], []);
+[_initProto] = _applyDecs(ApiClient, [[time, 2, "asyncPost"]], []);
 
 (async () => {
-  const client = new ApiClient({});
-  client.post('/syncKeywords', {});
+  const client = new ApiClient({}); // client.post('/syncKeywords', {});
+
   await client.asyncPost('/keywords', {});
   console.log('Called API successfully\n');
 })();

@@ -1,6 +1,5 @@
 function logWrapper(fn) {
-  return function () {
-    const args = [...arguments];
+  return function (...args) {
     console.log(`Function invoked with ${JSON.stringify(args)} at ${+new Date()}`);
     return fn.apply(this, args);
   };
