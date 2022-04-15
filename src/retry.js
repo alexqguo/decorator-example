@@ -18,7 +18,7 @@ const retry = ({ times, errorName }) => {
       }
     }
   };
-}
+};
 
 class ApiClient {
   constructor(apiContext) {
