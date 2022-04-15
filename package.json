@@ -1,0 +1,22 @@
+{
+  "name": "decorator-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx babel examples.js --watch --out-file examples-compiled.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/plugin-proposal-decorators": "^7.17.9"
+  },
+  "babel": {
+    "plugins": [
+      ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }]
+    ]
+  }
+}
